@@ -1,14 +1,13 @@
-import Link from 'next/link';
-import { ProjectItem } from './ProjectItem';
-import { SectionTitle } from '../SectionTitle';
-import { Container } from './styles';
+import { Header } from '../../components/Header';
+import { ProjectItem } from '../../components/ProjectItem';
+import { Container } from '../../styles/ProjectsStyles';
 
-export function Projects() {
+export default function Projects() {
   return (
     <Container>
-      <SectionTitle title="Últimos Projetos" />
+      <Header />
 
-      <section>
+      <main className="container">
         <ProjectItem
           title="Letmeask"
           type="App Web"
@@ -29,13 +28,14 @@ export function Projects() {
           slug="3"
           imgUrl="https://github.com/pduartesilva2005/rocketseat-layout-responsivo/raw/main/.github/rocketseat.png"
         />
-      </section>
 
-      <button type="button">
-        <Link href="/projetos">
-          <a>Ver todos os projetos</a>
-        </Link>
-      </button>
+        <ProjectItem
+          title="Move.it"
+          type="App Web"
+          slug="4"
+          imgUrl="https://github.com/pduartesilva2005/nlw-04-reactjs/raw/main/screenshot.PNG"
+        />
+      </main>
     </Container>
   );
 }

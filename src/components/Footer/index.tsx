@@ -14,13 +14,15 @@ export function Footer() {
     window.scroll({
       top: 0,
       behavior: 'smooth'
-    })
+    });
   }
 
   return (
     <Container>
       <div className="container">
-        <button type="button" onClick={handleScrollTop}>Voltar ao topo</button>
+        <button type="button" onClick={handleScrollTop}>
+          Voltar ao topo
+        </button>
 
         <section>
           <AiOutlineTwitter
