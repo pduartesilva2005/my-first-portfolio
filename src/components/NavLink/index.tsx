@@ -5,13 +5,21 @@ import { NavLinkContainer } from './styles';
 type NavLinkProps = {
   title: string;
   path: string;
+  includes?: boolean;
 };
 
-export function NavLink({ title, path }: NavLinkProps) {
+export function NavLink({ title, path, includes = false }: NavLinkProps) {
   const router = useRouter();
-  
-  const isActive = router.pathname === path;
-  console.log(router.pathname);
+
+  function verifyIfIsActive() {
+    if (includes) {
+      return router.pathname.includes(path);
+    }
+
+    return path === router.pathname;
+  }
+
+  const isActive = verifyIfIsActive();
 
   return (
     <NavLinkContainer isActive={isActive}>
