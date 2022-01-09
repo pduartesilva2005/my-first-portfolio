@@ -3,36 +3,38 @@ import { ProjectItem } from './ProjectItem';
 import { SectionTitle } from '../SectionTitle';
 import { Container } from './styles';
 
-export function Projects() {
+type Project = {
+  slug: string;
+  title: string;
+  type: string;
+  description: string;
+  link: string;
+  thumbnail: string;
+};
+
+type ProjectsProps = {
+  projects: Project[];
+};
+
+export function Projects({ projects }: ProjectsProps) {
   return (
     <Container>
       <SectionTitle title="Últimos Projetos" />
 
       <section>
-        <ProjectItem
-          title="Letmeask"
-          type="App Web"
-          slug="1"
-          imgUrl="https://github.com/rocketseat-education/nlw-06-reactjs/raw/master/.github/cover.svg"
-        />
-
-        <ProjectItem
-          title="Gameplay"
-          type="App Mobile"
-          slug="2"
-          imgUrl="https://github.com/rocketseat-education/nlw-06-react-native/raw/master/.github/cover.png?style=flat"
-        />
-
-        <ProjectItem
-          title="Rocketseat Example"
-          type="Layout Responsivo"
-          slug="3"
-          imgUrl="https://github.com/pduartesilva2005/rocketseat-layout-responsivo/raw/main/.github/rocketseat.png"
-        />
+        {projects.slice(0, 3).map(project => (
+          <ProjectItem
+            key={project.slug}
+            title={project.title}
+            type={project.type}
+            slug={project.slug}
+            imgUrl={project.thumbnail}
+          />
+        ))}
       </section>
 
       <button type="button">
-        <Link href="/projetos">
+        <Link href="/projects">
           <a>Ver todos os projetos</a>
         </Link>
       </button>

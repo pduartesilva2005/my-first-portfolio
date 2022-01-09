@@ -1,41 +1,64 @@
+import { GetStaticProps } from 'next';
+import Prismic from '@prismicio/client';
 import { Header } from '../../components/Header';
 import { ProjectItem } from '../../components/ProjectItem';
+import { getPrismicClient } from '../../services/prismic';
 import { Container } from '../../styles/ProjectsStyles';
 
-export default function Projects() {
+type Project = {
+  slug: string;
+  title: string;
+  type: string;
+  description: string;
+  link: string;
+  thumbnail: string;
+};
+
+type ProjectsProps = {
+  projects: Project[];
+};
+
+export default function Projects({ projects }: ProjectsProps) {
   return (
     <Container>
       <Header />
 
       <main className="container">
-        <ProjectItem
-          title="Letmeask"
-          type="App Web"
-          slug="1"
-          imgUrl="https://github.com/rocketseat-education/nlw-06-reactjs/raw/master/.github/cover.svg"
-        />
-
-        <ProjectItem
-          title="Gameplay"
-          type="App Mobile"
-          slug="2"
-          imgUrl="https://github.com/rocketseat-education/nlw-06-react-native/raw/master/.github/cover.png?style=flat"
-        />
-
-        <ProjectItem
-          title="Rocketseat Example"
-          type="Layout Responsivo"
-          slug="3"
-          imgUrl="https://github.com/pduartesilva2005/rocketseat-layout-responsivo/raw/main/.github/rocketseat.png"
-        />
-
-        <ProjectItem
-          title="Move.it"
-          type="App Web"
-          slug="4"
-          imgUrl="https://github.com/pduartesilva2005/nlw-04-reactjs/raw/main/screenshot.PNG"
-        />
+        {projects.map(project => (
+          <ProjectItem
+            key={project.slug}
+            title={project.title}
+            type={project.type}
+            slug={project.slug}
+            imgUrl={project.thumbnail}
+          />
+        ))}
       </main>
     </Container>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+
+  const projectResponse = await prismic.query(
+    [Prismic.Predicates.at('document.type', 'project')],
+    { orderings: '[document.first_publication_date desc]' }
+  );
+
+  const projects = projectResponse.results.map((project: any) => ({
+    slug: project.uid,
+    title: project.data.title,
+    type: project.data.type,
+    description: project.data.description,
+    link: project.data.link.url,
+    thumbnail: project.data.thumbnail.url
+  }));
+
+  return {
+    props: {
+      projects
+    },
+    revalidate: 86400
+  };
+};
